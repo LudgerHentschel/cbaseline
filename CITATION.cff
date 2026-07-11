@@ -1,0 +1,34 @@
+cff-version: 1.2.0
+title: "CBaseline"
+message: "If you use CBaseline in academic work, please cite the associated paper and repository."
+type: software
+
+authors:
+  - family-names: "Hentschel"
+    given-names: "Ludger"
+
+repository-code: "https://github.com/lhentschel/cbaseline"
+license: "BSD-3-Clause"
+
+keywords:
+  - machine learning
+  - interpretability
+  - feature attribution
+  - Shapley values
+  - SHAP
+  - prediction-neutral backgrounds
+
+abstract: >
+  CBaseline constructs prediction-neutral empirical background distributions
+  for feature attribution. It provides deterministic equal-weight backgrounds
+  and kernel-weighted backgrounds calibrated to a user-specified reference
+  prediction.
+
+preferred-citation:
+  type: article
+  authors:
+    - family-names: "Hentschel"
+      given-names: "Ludger"
+  title: "A Canonical Background Distribution for Shapley Attribution"
+  year: 2026
+  url: "https://www.ludgerhentschel.com/Research.html"
