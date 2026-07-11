@@ -20,9 +20,7 @@ CBaseline provides two complementary constructions.
 
 Both constructions are deterministic conditional on the fitted model and reference sample.
 
-The methodology is developed in
-
-> Hentschel (2026), *A Canonical Background Distribution for Shapley Attribution.*
+The methodology is developed in Hentschel (2026), *A Canonical Background Distribution for Shapley Attribution.*
 
 ---
 
@@ -84,6 +82,52 @@ Because SHAP's base value equals the mean prediction over the supplied backgroun
 $$ \sum_j \phi_j(x) = f(x) - f_0.$$
 
 No changes to SHAP itself are required.
+
+## Why prediction-neutral backgrounds?
+
+Every feature attribution answers a counterfactual question. For Shapley
+methods that question is determined entirely by the background distribution.
+
+Using a background distribution $Q$, the attribution explains
+
+$$ f(x) - \mathbb{E}_Q [f(X)]. $$
+
+Changing the background therefore changes the prediction difference being
+decomposed, even though the attribution algorithm itself is unchanged.
+
+CBaseline constructs a background whose mean prediction equals a user-specified
+reference level $f_0$. The resulting attribution therefore explains
+
+$$ f(x) - f_0, $$
+
+which is usually the prediction difference of scientific or practical interest.
+
+Unlike methods that generate synthetic reference points, CBaseline uses only
+observed inputs. The background remains supported by the empirical data while
+being localized around the desired prediction level.
+
+<p align="center">
+  <img src="docs/Figure_NeutralManifold.svg" width="700">
+</p>
+
+The figure illustrates the idea. The red curve is the prediction-neutral
+manifold
+
+$$ \mathcal{M}_0 = \{x : f(x) = f_0\}. $$
+
+CBaseline constructs its background from observed cases lying near this
+manifold. The background is therefore simultaneously
+
+- neutral in prediction,
+- supported by observed data, and
+- concentrated on the comparison of interest.
+
+Regions of the manifold that contain little or no observed data naturally
+receive little weight.
+
+Localization is performed entirely in prediction space rather than feature space. Observations are considered close when their model outputs are similar, regardless of how far apart they may lie in the original feature space. Consequently, the construction scales naturally to very high-dimensional inputs without suffering from the curse of dimensionality associated with kernel methods in feature space.
+
+---
 
 ## Choosing the reference prediction
 
@@ -189,50 +233,6 @@ bg = background(
 This is an easier balancing problem and usually achieves a smaller neutrality
 residual, but the resulting background is specific to class `c`; a different
 target class requires a different background.
-
-## Why prediction-neutral backgrounds?
-
-Every feature attribution answers a counterfactual question. For Shapley
-methods that question is determined entirely by the background distribution.
-
-Using a background distribution $Q$, the attribution explains
-
-$$ f(x) - \mathbb{E}_Q [f(X)]. $$
-
-Changing the background therefore changes the prediction difference being
-decomposed, even though the attribution algorithm itself is unchanged.
-
-CBaseline constructs a background whose mean prediction equals a user-specified
-reference level $f_0$. The resulting attribution therefore explains
-
-$$ f(x) - f_0, $$
-
-which is usually the prediction difference of scientific or practical interest.
-
-Unlike methods that generate synthetic reference points, CBaseline uses only
-observed inputs. The background remains supported by the empirical data while
-being localized around the desired prediction level.
-
-<p align="center">
-  <img src="docs/Figure_NeutralManifold.svg" width="700">
-</p>
-
-The figure illustrates the idea. The red curve is the prediction-neutral
-manifold
-
-$$ \mathcal{M}_0 = \{x : f(x) = f_0\}. $$
-
-CBaseline constructs its background from observed cases lying near this
-manifold. The background is therefore simultaneously
-
-- neutral in prediction,
-- supported by observed data, and
-- concentrated on the comparison of interest.
-
-Regions of the manifold that contain little or no observed data naturally
-receive little weight.
-
-Localization is performed entirely in prediction space rather than feature space. Observations are considered close when their model outputs are similar, regardless of how far apart they may lie in the original feature space. Consequently, the construction scales naturally to very high-dimensional inputs without suffering from the curse of dimensionality associated with kernel methods in feature space.
 
 ---
 
