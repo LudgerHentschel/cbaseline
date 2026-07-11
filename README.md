@@ -4,17 +4,17 @@
 
 CBaseline constructs **prediction-neutral background distributions** for feature attribution methods such as SHAP, Integrated Gradients, TreeIG, and EDEF.
 
-Given model outputs on a reference dataset and a user-specified reference prediction $f_0$, CBaseline constructs an empirical background distribution whose average model output equals, or closely approximates, $f_0$. For an exactly neutral background, feature attributions therefore explain
+Given a fitted model, a reference dataset, and a user-specified reference prediction $f_0$, CBaseline constructs an empirical background distribution whose average model output equals $f_0$. Feature attributions computed relative to this background therefore explain
 
-$$f(x)-f_0,$$
+$$f(x)-f_0.$$
 
-the prediction difference the explanation is intended to describe. For a finite equal-weight background, this identity holds up to the reported neutrality residual.
+the prediction difference the explanation is intended to describe.
 
 Unlike methods that generate synthetic reference points, CBaseline uses only observed data. It does not modify the attribution algorithm, approximate Shapley values, or introduce a generative model of the feature distribution. Its only role is to construct the background distribution supplied to the attribution method.
 
 CBaseline provides two complementary constructions.
 
-- **Weighted backgrounds** preserve all localized observations together with observation weights. They satisfy the neutrality constraint within numerical tolerance and are preferred whenever the attribution method natively supports observation weights.
+- **Weighted backgrounds** preserve all localized observations together with observation weights. They satisfy the neutrality constraint to machine precision and are preferred whenever the attribution method natively supports observation weights.
 
 - **Equal-weight backgrounds** select a compact deterministic subset of observed cases with equal weights. They are designed for software, including standard SHAP implementations, that accepts only an unweighted background matrix.
 
@@ -34,7 +34,7 @@ pip install cbaseline
 
 CBaseline requires
 
-- Python 3.10 or newer
+- Python 3.9 or newer
 - NumPy
 - SciPy
 
@@ -60,6 +60,8 @@ bg = background(
     predictions=f_train,
     f0=f0,
     features=X_train,
+    weighting="equal",
+    size=100,
 )
 
 X_background = bg.rows
@@ -68,7 +70,7 @@ explainer = shap.Explainer(model.predict, X_background)
 phi = explainer(X_eval)
 ```
 
-`background()` defaults to a deterministic equal-weight background of 100 observed rows, the common SHAP use case. `X_background` is an ordinary NumPy array that can be supplied anywhere an unweighted SHAP background is expected.
+`X_background` is simply a NumPy array containing 100 observed rows. It can be supplied anywhere an unweighted SHAP background is expected.
 
 The diagnostics report how closely the selected background satisfies the requested neutrality constraint.
 
@@ -77,7 +79,11 @@ print(bg.diagnostics["selected_neutrality_norm"])
 print(bg.predictions.mean(), f0)
 ```
 
-Because SHAP's base value equals the mean prediction over the supplied background, the attributions sum to the prediction minus that mean. When the background is exactly neutral, this is $f(x)-f_0$; otherwise, the difference from $f_0$ is the reported neutrality residual. No changes to SHAP itself are required.
+Because SHAP's base value equals the mean prediction over the supplied background, the resulting feature attributions satisfy
+
+$$ \sum_j \phi_j(x) = f(x) - f_0.$$
+
+No changes to SHAP itself are required.
 
 ## Choosing the reference prediction
 
@@ -150,13 +156,12 @@ bg = background(
     predictions=Z,
     f0=z_star,
     features=X_train,
+    weighting="equal",
     size=200,
 )
 ```
 
-CBaseline automatically detects and removes the redundant common-logit
-direction, so a $K$-class problem is treated as a $K-1$ dimensional
-neutrality problem.
+CBaseline automatically detects and removes the redundant common-logit direction, so a $K$-class problem is treated as a $K - 1$ dimensional neutrality problem.
 
 ### Scalar versus vector neutrality
 
@@ -176,6 +181,8 @@ bg = background(
     predictions=Z[:, c],
     f0=float(z_star[c]),
     features=X_train,
+    weighting="equal",
+    size=100,
 )
 ```
 
@@ -195,9 +202,8 @@ $$ f(x) - \mathbb{E}_Q [f(X)]. $$
 Changing the background therefore changes the prediction difference being
 decomposed, even though the attribution algorithm itself is unchanged.
 
-CBaseline constructs a background whose mean prediction equals, or closely
-approximates, a user-specified reference level $f_0$. For an exactly neutral
-background, the resulting attribution explains
+CBaseline constructs a background whose mean prediction equals a user-specified
+reference level $f_0$. The resulting attribution therefore explains
 
 $$ f(x) - f_0, $$
 
@@ -207,20 +213,26 @@ Unlike methods that generate synthetic reference points, CBaseline uses only
 observed inputs. The background remains supported by the empirical data while
 being localized around the desired prediction level.
 
+<p align="center">
+  <img src="docs/Figure_NeutralManifold.svg" width="700">
+</p>
 
-The target population is localized near the prediction-neutral manifold
+The figure illustrates the idea. The red curve is the prediction-neutral
+manifold
 
 $$ \mathcal{M}_0 = \{x : f(x) = f_0\}. $$
 
-The background is therefore neutral in prediction, supported by observed data,
-and concentrated on the comparison of interest. Regions of the manifold that
-contain little or no observed data naturally receive little weight.
+CBaseline constructs its background from observed cases lying near this
+manifold. The background is therefore simultaneously
 
-Localization is performed entirely in prediction space rather than feature
-space. Observations are considered close when their model outputs are similar,
-regardless of how far apart they may lie in the original feature space. The
-construction therefore depends on the dimension of the prediction target, not
-on the potentially much larger number of input features.
+- neutral in prediction,
+- supported by observed data, and
+- concentrated on the comparison of interest.
+
+Regions of the manifold that contain little or no observed data naturally
+receive little weight.
+
+Localization is performed entirely in prediction space rather than feature space. Observations are considered close when their model outputs are similar, regardless of how far apart they may lie in the original feature space. Consequently, the construction scales naturally to very high-dimensional inputs without suffering from the curse of dimensionality associated with kernel methods in feature space.
 
 ---
 
@@ -237,6 +249,8 @@ bg = background(
     predictions=f_train,
     f0=f0,
     features=X_train,
+    weighting="equal",
+    size=100,
 )
 ```
 
@@ -275,8 +289,8 @@ assigns observation weights.
 
 The initial kernel weights localize the empirical distribution around the
 reference prediction. An exponential calibration then adjusts those weights so
-that the weighted mean prediction equals $f_0$ within numerical tolerance
-whenever the requested reference lies within the localized support.
+that the weighted mean prediction equals $f_0$ to machine precision whenever
+the requested reference lies within the localized support.
 
 Both the kernel weights and the calibrated weights are retained:
 
@@ -286,12 +300,11 @@ wb.result.calibrated_weights
 ```
 
 Whenever the downstream attribution method accepts observation weights, this is
-the preferred construction because it achieves finite-sample neutrality
-within numerical tolerance without introducing Monte Carlo error.
+the preferred construction because it achieves exact finite-sample neutrality
+without introducing Monte Carlo error.
 
 If the downstream attribution method does not accept observation weights, use
-the equal-weight construction instead. This returns a compact deterministic
-background designed specifically for weight-blind attribution software.
+the equal-weight construction (`weighting="equal"`) instead. This returns a compact deterministic background designed specifically for weight-blind attribution software.
 
 The weighted result also provides a `resampled()` method:
 
@@ -328,8 +341,8 @@ selection has more flexibility while remaining equally weighted.
 
 ### Weighted background
 
-For `weighting="kernel"` or `weighting="calibrated"`, the tuning parameter
-is the localization bandwidth.
+For `weighting="kernel"` or `weighting="calibrated"`, the tuning parameter is the localization
+bandwidth.
 
 By default CBaseline uses a shrinking Silverman-type rule,
 
@@ -481,7 +494,7 @@ attribution without changing its mathematical definition.
 | Random subsample | Approximately | ✓ | ✗ | ✗ |
 | Full reference sample | ✓ | ✓ | ✓ | ✗ |
 | Generated counterfactuals | ✓ | ✗ | ✗ | ✓ |
-| **CBaseline** | Exact or reported approximation | ✓ | ✓ | ✗ |
+| **CBaseline** | ✓ | ✓ | ✓ | ✗ |
 
 The distinguishing feature of CBaseline is that it combines three properties:
 
@@ -529,6 +542,8 @@ bg = background(
     predictions,
     f0,
     features,
+    weighting="equal",       # "equal", "kernel", or "calibrated"
+    size=100,                # required only for equal weights
 )
 
 bg.rows                      # observed background rows
@@ -538,8 +553,7 @@ bg.predictions               # model outputs for the rows
 bg.diagnostics
 ```
 
-The default is a deterministic equal-weight background with 100 rows. Set
-`size` to change that budget. For a calibrated weighted background:
+For a calibrated weighted background:
 
 ```python
 wb = background(
@@ -554,6 +568,9 @@ X_bg, w = wb.rows, wb.weights
 
 For direct, uncalibrated kernel weights, use `weighting="kernel"`.
 
+The descriptive constructors `uniform_background` and
+`kernel_weighted_background` remain available for backward compatibility and
+for users who need their method-specific result objects directly.
 
 Supported kernels are `"gaussian"`, `"epanechnikov"`, and `"uniform"`.
 
@@ -607,5 +624,5 @@ If CBaseline contributes to published work, please cite
 
 ## License
 
-CBaseline is distributed under the terms of the BSD 3-Clause License. See
+CBaseline is distributed under the terms of the MIT License. See
 [LICENSE](LICENSE) for details.
