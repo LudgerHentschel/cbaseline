@@ -97,23 +97,19 @@ $$ f(x) - \mathbb{E}_Q [f(X)]. $$
 Changing the background therefore changes the prediction difference being
 decomposed, even though the attribution algorithm itself is unchanged.
 
-CBaseline constructs a background whose mean prediction equals a user-specified
-reference level $f_0$. The resulting attribution therefore explains
+Given a user-specified reference level $f_0$, CBaseline constructs a background whose predictions are close to $f_0$ and whose mean prediction equals $f_0$. The resulting attribution therefore explains
 
 $$ f(x) - f_0, $$
 
-which is usually the prediction difference of scientific or practical interest.
+When $f_0$ is the unconditional mean prediction, this is the prediction difference most commonly of scientific or practical interest.
 
-Unlike methods that generate synthetic reference points, CBaseline uses only
-observed inputs. The background remains supported by the empirical data while
-being localized around the desired prediction level.
+Unlike methods that generate synthetic reference points, CBaseline uses only observed inputs. The background remains supported by the empirical data while being localized around the desired prediction level.
 
 <p align="center">
   <img src="docs/Figure_NeutralManifold.svg" width="700">
 </p>
 
-The figure illustrates the idea. The red curve is the prediction-neutral
-manifold
+The figure illustrates the idea. The red curve is the prediction-neutral manifold
 
 $$ \mathcal{M}_0 = \{x : f(x) = f_0\}. $$
 
@@ -121,8 +117,8 @@ CBaseline constructs its background from observed cases lying near this
 manifold. The background is therefore simultaneously
 
 - neutral in prediction,
-- supported by observed data, and
-- concentrated on the comparison of interest.
+- concentrated on the comparison of interest, and
+- supported by observed data.
 
 Regions of the manifold that contain little or no observed data naturally
 receive little weight.
