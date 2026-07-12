@@ -608,11 +608,17 @@ If CBaseline contributes to published work, please cite
 ## References
 
 - Deville, Jean-Claude, and Carl-Erik Särndal, 1992, "Calibration estimators in survey sampling." *Journal of the American Statistical Association.*
-- Hentschel, Ludger, 2026a, "Canonical Integrated Gradients: Expectations over Neutral Prediction Baselines." [ludgerhentschel.com/Research](https://ludgerhentschel.com/Research.html)
-- Hentschel, Ludger, 2026b, "A canonical background distribution for Shapley attribution." [ludgerhentschel.com/Research](https://ludgerhentschel.com/Research.html)
+
+- Hentschel, Ludger, 2026a, ["Canonical Integrated Gradients: Expectations over Neutral Prediction Baselines."](https://www.ludgerhentschel.com/PDFs/Hentschel%20'26h.pdf), *www.ludgerhentschel.com/Research.html*
+
+- Hentschel, Ludger, 2026b, ["A canonical background distribution for Shapley attribution."](https://www.ludgerhentschel.com/PDFs/Hentschel%20'26i.pdf), *www.ludgerhentschel.com/Research.html*
+
 - Izzo, Cosimo, Aldo Lipani, Ramin Okhrati, and Francesca Medda, 2021, "A baseline for Shapley values in MLPs: From missingness to neutrality." *Proceedings of the 29th European Symposium on Artificial Neural Networks, Computational Intelligence and Machine Learning (ESANN).*
+
 - Lundberg, Scott M., and Su-In Lee, 2017, "A unified Approach to Interpreting Model Predictions." *Proceedings of the 31st International Conference on Neural Information Processing Systems.*
+
 - Merrick, Luke, and Ankur Taly, 2020, "The explanation game: Explaining machine learning models using Shapley values." in *Machine Learning and Knowledge Extraction* (Holzinger, Andreas, Peter Kieseberg, A Min Tjoa, and Edgar Weippl, eds.)
+
 - Sundararajan, Mukund, Ankur Taly, and Qiqi Yan, 2017, "Axiomatic Attribution for Deep Networks." *Proceedings of the 34th International Conference on Machine Learning.*
 
 ---
