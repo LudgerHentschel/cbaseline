@@ -4,7 +4,7 @@
 
 CBaseline constructs **prediction-neutral background distributions** for feature attribution methods such as SHAP, Integrated Gradients, TreeIG, and EDEF.
 
-Given a fitted model, a reference dataset, and a user-specified reference prediction $f_0$, CBaseline constructs an empirical background distribution of features whose average model output equals $f_0$. Feature attributions computed relative to this background therefore explain
+Given a fitted model, a reference dataset, and a user-specified reference prediction $f_0$, CBaseline constructs an empirical background distribution of features whose predictions are close to $f_0$ and equal to $f_0$ on average. Feature attributions computed relative to this background therefore explain
 
 $$f(x) - f_0,$$
 
