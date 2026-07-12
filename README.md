@@ -10,9 +10,9 @@ $$f(x) - f_0,$$
 
 the prediction difference the explanation is intended to describe.
 
-Unlike methods that generate synthetic reference points, CBaseline uses only observed data. It does not modify the attribution algorithm, approximate Shapley values, or introduce a generative model of the feature distribution. Its only role is to construct the background distribution that best matches the attribution question, which is then supplied to the attribution method.
-
 The canonical choice for $f_0$ is the unconditional prediction from the model. All other choices use additional information. However, other choices for $f_0$ may be of interest in certain situations. 
+
+Unlike methods that generate synthetic reference points, CBaseline uses only observed data. It does not modify the attribution algorithm, approximate Shapley values, or introduce a generative model of the feature distribution. Its only role is to construct the background distribution that best matches the attribution question, which is then supplied to the attribution method.
 
 CBaseline provides two complementary constructions.
 
@@ -595,9 +595,20 @@ Future extensions may include
 If CBaseline contributes to published work, please cite
 
 ```bibtex
-@misc{hentschel2026cbaseline,
+@misc{hentschel2026a,
   author = {Hentschel, Ludger},
-  title  = {A Canonical Background Distribution for Shapley Attribution},
+  title  = {Canonical Integrated Gradients: Expectations over neutral prediction baselines},
+  year   = {2026},
+  url    = {https://www.ludgerhentschel.com/Research.html},
+}
+```
+
+or 
+
+```bibtex
+@misc{hentschel2026b,
+  author = {Hentschel, Ludger},
+  title  = {A canonical background distribution for Shapley attribution},
   year   = {2026},
   url    = {https://www.ludgerhentschel.com/Research.html},
 }
@@ -609,9 +620,9 @@ If CBaseline contributes to published work, please cite
 
 - Deville, Jean-Claude, and Carl-Erik Särndal, 1992, "Calibration estimators in survey sampling." *Journal of the American Statistical Association.*
 
-- Hentschel, Ludger, 2026a, ["Canonical Integrated Gradients: Expectations over Neutral Prediction Baselines."](https://www.ludgerhentschel.com/PDFs/Hentschel%20'26h.pdf), *www.ludgerhentschel.com/Research.html*
+- Hentschel, Ludger, 2026a, ["Canonical Integrated Gradients: Expectations over neutral prediction baselines."](https://www.ludgerhentschel.com/PDFs/Hentschel%20'26h.pdf) *www.ludgerhentschel.com/Research.html*
 
-- Hentschel, Ludger, 2026b, ["A canonical background distribution for Shapley attribution."](https://www.ludgerhentschel.com/PDFs/Hentschel%20'26i.pdf), *www.ludgerhentschel.com/Research.html*
+- Hentschel, Ludger, 2026b, ["A canonical background distribution for Shapley attribution."](https://www.ludgerhentschel.com/PDFs/Hentschel%20'26i.pdf) *www.ludgerhentschel.com/Research.html*
 
 - Izzo, Cosimo, Aldo Lipani, Ramin Okhrati, and Francesca Medda, 2021, "A baseline for Shapley values in MLPs: From missingness to neutrality." *Proceedings of the 29th European Symposium on Artificial Neural Networks, Computational Intelligence and Machine Learning (ESANN).*
 
