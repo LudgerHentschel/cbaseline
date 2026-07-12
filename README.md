@@ -4,13 +4,15 @@
 
 CBaseline constructs **prediction-neutral background distributions** for feature attribution methods such as SHAP, Integrated Gradients, TreeIG, and EDEF.
 
-Given a fitted model, a reference dataset, and a user-specified reference prediction $f_0$, CBaseline constructs an empirical background distribution whose average model output equals $f_0$. Feature attributions computed relative to this background therefore explain
+Given a fitted model, a reference dataset, and a user-specified reference prediction $f_0$, CBaseline constructs an empirical background distribution of features whose average model output equals $f_0$. Feature attributions computed relative to this background therefore explain
 
-$$f(x)-f_0.$$
+$$f(x) - f_0,$$
 
 the prediction difference the explanation is intended to describe.
 
-Unlike methods that generate synthetic reference points, CBaseline uses only observed data. It does not modify the attribution algorithm, approximate Shapley values, or introduce a generative model of the feature distribution. Its only role is to construct the background distribution supplied to the attribution method.
+Unlike methods that generate synthetic reference points, CBaseline uses only observed data. It does not modify the attribution algorithm, approximate Shapley values, or introduce a generative model of the feature distribution. Its only role is to construct the background distribution that best matches the attribution question, which is then supplied to the attribution method.
+
+The canonical choice for $f_0$ is the unconditional prediction from the model. All other choices use additional information. However, other choices for $f_0$ may be of interest in certain situations. 
 
 CBaseline provides two complementary constructions.
 
@@ -20,7 +22,7 @@ CBaseline provides two complementary constructions.
 
 Both constructions are deterministic conditional on the fitted model and reference sample.
 
-The methodology is developed in Hentschel (2026), *A Canonical Background Distribution for Shapley Attribution.*
+Hentschel (2026a) and Hentschel (2026b) develop the methodology for CBaseline.
 
 ---
 
@@ -131,14 +133,11 @@ Localization is performed entirely in prediction space rather than feature space
 
 ## Choosing the reference prediction
 
-CBaseline requires the reference prediction `f0` explicitly. This is the
-prediction your attribution is intended to explain relative to. Different
-choices answer different questions, so the package deliberately does not choose
-one for you.
+CBaseline requires the reference prediction `f0` explicitly. The attribution answer the question "Why does the model predict $f(x)$ instead of $f_0$.  Different choices answer different questions, so the package deliberately does not choose $f_0$ for you.
 
 ### Regression
 
-The canonical choice is the unconditional mean prediction,
+The canonical choice is the unconditional mean prediction. We often proxy this with the unconditional training mean,
 
 ```python
 f_train = model.predict(X_train)
@@ -146,13 +145,13 @@ f0 = float(f_train.mean())
 ```
 
 The resulting attribution explains why the prediction differs from the model's
-typical prediction over the reference population.
+typical prediction. This is the canonical choice because it is an uninformed but sensible prediction. All other baselines incorporate additional information. 
 
 ### Binary classification
 
-Attribute the model score (or logit), not the probability.
+We attribute the model score (or logit), not the probability, because that is the model's direct output and because the scores are additive, whereas probabilities are not. 
 
-For the canonical comparison use the mean score,
+For the canonical comparison, we can use the mean score,
 
 ```python
 scores = model.decision_function(X_train)
@@ -168,6 +167,8 @@ f0 = 0.0
 
 which asks why the observation lies on one side of the decision boundary rather
 than the other.
+
+It is often easier to think about probabilities rather than logit scores but there is a one-to-one mapping between the two. 
 
 ### Multiclass classification
 
@@ -254,7 +255,7 @@ bg = background(
 )
 ```
 
-This returns exactly 100 observed rows with equal weight.
+This returns exactly 100 observed rows with equal weight. They are the observations closest to the prediction manifold $\mathcal{M}_0$
 
 The construction is deterministic: repeating the calculation with the same
 reference sample, fitted model, and reference prediction always returns exactly
@@ -341,8 +342,7 @@ selection has more flexibility while remaining equally weighted.
 
 ### Weighted background
 
-For `weighting="kernel"` or `weighting="calibrated"`, the tuning parameter is the localization
-bandwidth.
+For `weighting="kernel"` or `weighting="calibrated"`, the tuning parameter is the localization bandwidth.
 
 By default CBaseline uses a shrinking Silverman-type rule,
 
@@ -516,18 +516,13 @@ feature distribution, whereas CBaseline samples directly from the observed data.
 CBaseline is complementary to existing attribution methods.
 
 - **SHAP** attributes predictions relative to a background distribution.
-- **Integrated Gradients** attributes predictions relative to a baseline point.
+- **Integrated Gradients** attributes predictions relative to a baseline point or distribution.
 - **TreeIG** computes exact Integrated Gradients for tree models.
-- **EDEF** provides expected-derivative feature attribution.
+- **EDEF** provides an attribution of model fit instead of predictions.
 
-CBaseline supplies the reference distribution itself. It can therefore be used
-with any attribution method whose interpretation depends on a background or
-reference population.
+CBaseline supplies the reference distribution itself. It can therefore be used with any attribution method whose interpretation depends on a background or reference population.
 
-The same prediction-neutral principle underlies the canonical Integrated
-Gradients baseline developed in Hentschel (2026). CBaseline extends that idea
-from a single baseline point to empirical background distributions for Shapley
-attribution.
+This prediction-neutral principle underlies the canonical Integrated Gradients baseline developed in Hentschel (2026). CBaseline extends that idea from a weighted background distribution to equally-weighted background distributions suitable for SHAP attribution.
 
 ---
 
@@ -586,7 +581,7 @@ CBaseline currently supports
 - equal-weight and weighted empirical backgrounds; and
 - reference samples ranging from thousands to millions of observations.
 
-Planned extensions include
+Future extensions may include
 
 - adaptive and varying-bandwidth localization;
 - decision-boundary and pairwise-class backgrounds;
@@ -612,13 +607,13 @@ If CBaseline contributes to published work, please cite
 
 ## References
 
-- Deville, Jean-Claude, and Carl-Erik Särndal. 1992. "Calibration Estimators in Survey Sampling." *Journal of the American Statistical Association*.
-- Hentschel, Ludger. 2026. *A Canonical Background Distribution for Shapley Attribution.*
-- Hentschel, Ludger. 2026. *Canonical Integrated Gradients: Expectations over Neutral Prediction Baselines.*
-- Izzo, Cosimo, Aldo Lipani, Ramin Okhrati, and Francesca Medda. 2021. "A Baseline for Shapley Values in MLPs: From Missingness to Neutrality."
-- Lundberg, Scott M., and Su-In Lee. 2017. "A Unified Approach to Interpreting Model Predictions."
-- Merrick, Luke, and Ankur Taly. 2020. "The Explanation Game: Explaining Machine Learning Models Using Shapley Values."
-- Sundararajan, Mukund, Ankur Taly, and Qiqi Yan. 2017. "Axiomatic Attribution for Deep Networks."
+- Deville, Jean-Claude, and Carl-Erik Särndal, 1992, "Calibration estimators in survey sampling." *Journal of the American Statistical Association.*
+- Hentschel, Ludger, 2026a, "Canonical Integrated Gradients: Expectations over Neutral Prediction Baselines."
+- Hentschel, Ludger, 2026b, "A canonical background distribution for Shapley attribution."
+- Izzo, Cosimo, Aldo Lipani, Ramin Okhrati, and Francesca Medda, 2021, "A baseline for Shapley values in MLPs: From missingness to neutrality." *Proceedings of the 29th European Symposium on Artificial Neural Networks, Computational Intelligence and Machine Learning (ESANN).*
+- Lundberg, Scott M., and Su-In Lee, 2017, "A unified Approach to Interpreting Model Predictions." *Proceedings of the 31st International Conference on Neural Information Processing Systems.*
+- Merrick, Luke, and Ankur Taly, 2020, "The explanation game: Explaining machine learning models using Shapley values." in *Machine Learning and Knowledge Extraction* (Holzinger, Andreas, Peter Kieseberg, A Min Tjoa, and Edgar Weippl, eds.)
+- Sundararajan, Mukund, Ankur Taly, and Qiqi Yan, 2017, "Axiomatic Attribution for Deep Networks." *Proceedings of the 34th International Conference on Machine Learning.*
 
 ---
 
