@@ -2,7 +2,7 @@
 
 [![PyPI version](https://img.shields.io/pypi/v/cbaseline.svg)](https://pypi.org/project/cbaseline/)
 
-CBaseline constructs **prediction-neutral background distributions** for feature attribution methods such as SHAP, Integrated Gradients, TreeIG, and EDEF.
+CBaseline constructs **prediction-neutral background distributions** for feature attribution methods such as SHAP, Integrated Gradients, and TreeIG.
 
 Given a fitted model, a reference dataset, and a user-specified reference prediction $f_0$, CBaseline constructs an empirical background distribution of features whose predictions are close to $f_0$ and equal to $f_0$ on average. Feature attributions computed relative to this background therefore explain
 
@@ -514,7 +514,6 @@ CBaseline is complementary to existing attribution methods.
 - **SHAP** attributes predictions relative to a background distribution.
 - **Integrated Gradients** attributes predictions relative to a baseline point or distribution.
 - **TreeIG** computes exact Integrated Gradients for tree models.
-- **EDEF** provides an attribution of model fit instead of predictions.
 
 CBaseline supplies the reference distribution itself. It can therefore be used with any attribution method whose interpretation depends on a background or reference population.
 
