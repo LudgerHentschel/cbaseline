@@ -23,7 +23,6 @@ keywords = [
     "integrated gradients", 
     "SHAP",
     "treeig",
-    "edef",
 ]
 
 classifiers = [
