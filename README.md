@@ -177,17 +177,10 @@ logits = model.decision_function(X_train)
 Z = logits - logits.mean(axis=1, keepdims=True)
 ```
 
-and compute the mean class probabilities
+The canonical reference is the mean centered score vector:
 
 ```python
-p_star = model.predict_proba(X_train).mean(axis=0)
-```
-
-The corresponding neutral centered-logit vector is
-
-```python
-z_star = np.log(p_star)
-z_star -= z_star.mean()
+z_star = Z.mean(axis=0)
 ```
 
 Then construct the background with
@@ -204,32 +197,17 @@ bg = background(
 
 CBaseline automatically detects and removes the redundant common-logit direction, so a $K$-class problem is treated as a $K - 1$ dimensional neutrality problem.
 
-### Scalar versus vector neutrality
+### Joint vector neutrality
 
-The recommended approach is to construct **one background that is neutral for
-all classes simultaneously** by passing the full centered-logit matrix.
+Construct **one background that is neutral for the complete multiclass score
+object** by passing the full centered-logit matrix.
 
 This produces a single reference population that can be reused for explaining
-every class and every observation.
-
-If you are interested only in a single class, you may instead construct a
-scalar background using one centered-logit column,
-
-```python
-c = predicted_class
-
-bg = background(
-    predictions=Z[:, c],
-    f0=float(z_star[c]),
-    features=X_train,
-    weighting="equal",
-    size=100,
-)
-```
-
-This is an easier balancing problem and usually achieves a smaller neutrality
-residual, but the resulting background is specific to class `c`; a different
-target class requires a different background.
+every observation. The stored $K$ centered-score coordinates retain class
+labels, while their zero-sum restriction makes the prediction-space problem
+$K - 1$ dimensional. Constructing separate scalar backgrounds for individual
+classes would change the reference population across outputs and would no
+longer represent one coherent multiclass decision baseline.
 
 ---
 
