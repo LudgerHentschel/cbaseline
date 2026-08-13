@@ -12,7 +12,7 @@ the prediction difference the explanation is intended to describe.
 
 The canonical choice for $f_0$ is the unconditional prediction from the model. All other choices use additional information. However, other choices for $f_0$ may be of interest in certain situations. 
 
-Unlike methods that generate synthetic reference points, CBaseline uses only observed data. It does not modify the attribution algorithm, approximate Shapley values, or introduce a generative model of the feature distribution. Its only role is to construct the background distribution that best matches the attribution question, which is then supplied to the attribution method.
+Unlike methods that generate synthetic reference points, CBaseline uses only observed data. It does not modify the attribution algorithm or approximate Shapley values. Its only role is to construct the background distribution that best matches the attribution question, which is then supplied to the attribution method. Importantly, CBaseline does this without a generative model of the feature distribution or even without high-dimensional data analysis. 
 
 CBaseline provides two complementary constructions.
 
@@ -42,7 +42,9 @@ CBaseline requires
 
 ## Quickstart
 
-The most common use case is supplying an equal-weight background to SHAP.
+The most common use case is the construction of baseline or background distributions for feature attribution. 
+
+For example, `cbaseline` can supply an equal-weight background to SHAP feature attributions. 
 
 ```python
 import shap
@@ -84,6 +86,10 @@ Because SHAP's base value equals the mean prediction over the supplied backgroun
 $$ \sum_j \phi_j(x) = f(x) - f_0.$$
 
 No changes to SHAP itself are required.
+
+The weighted backgrounds are conceptually superior to the unweighted backgrounds but SHAP does not natively support them, at this time. 
+
+In addition, the baselines can be supplied to any feature attribution method that accepts baseline distributions. For example, integrated gradients feature attributions may able to use weighted baseline distributions, 
 
 ## Why prediction-neutral backgrounds?
 
