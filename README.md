@@ -2,7 +2,7 @@
 
 [![PyPI version](https://img.shields.io/pypi/v/cbaseline.svg)](https://pypi.org/project/cbaseline/)
 
-CBaseline constructs **prediction-neutral background distributions** for feature attribution methods such as SHAP, Integrated Gradients, and TreeIG.
+CBaseline constructs **prediction-neutral background distributions** for feature attribution methods such as SHAP, Integrated Gradients, or [TreeIG](https://github.com/LudgerHentschel/treeig).
 
 Given a fitted model, a reference dataset, and a user-specified reference prediction $f_0$, CBaseline constructs an empirical background distribution of features whose predictions are close to $f_0$ and equal to $f_0$ on average. Feature attributions computed relative to this background therefore explain
 
@@ -44,7 +44,7 @@ CBaseline requires
 
 The most common use case is the construction of baseline or background distributions for feature attribution. 
 
-For example, `cbaseline` can supply an equal-weight background to SHAP feature attributions. 
+For example, CBaseline can supply an equal-weight background to SHAP feature attributions. 
 
 ```python
 import shap
@@ -89,7 +89,7 @@ No changes to SHAP itself are required.
 
 The weighted backgrounds are conceptually superior to the unweighted backgrounds but SHAP does not natively support them, at this time. 
 
-In addition, the baselines can be supplied to any feature attribution method that accepts baseline distributions. For example, integrated gradients feature attributions may able to use weighted baseline distributions, 
+In addition, the baselines can be supplied to any feature attribution method that accepts baseline distributions. For example, integrated gradients feature attributions may able to use weighted baseline distributions, In particular, [TreeIG](https://github.com/LudgerHentschel/treeig) offers integrated gradients for tree models relative to weighted baseline distributions. 
 
 ## Why prediction-neutral backgrounds?
 
