@@ -4,7 +4,7 @@
 
 CBaseline constructs **prediction-neutral background distributions** for feature attribution methods such as [SHAP](https://github.com/shap/shap), Integrated Gradients, or [TreeIG](https://github.com/LudgerHentschel/treeig).
 
-Given a fitted model, a reference dataset, and a user-specified reference prediction $f_0$, CBaseline constructs an empirical background distribution of features whose predictions are close to $f_0$ and equal to $f_0$ on average. Feature attributions computed relative to this background therefore explain
+Given a fitted model, a reference dataset, and a user-specified reference prediction $f_0$, CBaseline constructs an empirical background distribution of features whose predictions are close to $f_0$ and, on average, equal to $f_0$. Feature attributions computed relative to this background therefore explain
 
 $$f(x) - f_0,$$
 
@@ -12,7 +12,7 @@ the prediction difference the explanation is intended to describe.
 
 The canonical choice for $f_0$ is the unconditional prediction from the model. All other choices use additional information. However, other choices for $f_0$ may be of interest in certain situations. 
 
-Unlike methods that generate synthetic reference points, CBaseline uses only observed data. It does not modify the attribution algorithm or approximate Shapley values. Its only role is to construct the background distribution that best matches the attribution question, which is then supplied to the attribution method. Importantly, CBaseline does this without a generative model of the feature distribution or even without high-dimensional data analysis. 
+Unlike methods that generate synthetic reference points, CBaseline uses only observed data. It does not modify the attribution algorithm or approximate attribution values. Its only role is to construct the background distribution that best matches the attribution question, which is then supplied to the attribution method. Importantly, CBaseline does this without a generative model of the feature distribution or even without high-dimensional data analysis. 
 
 CBaseline provides two complementary constructions.
 
@@ -72,7 +72,7 @@ explainer = shap.Explainer(model.predict, X_background)
 phi = explainer(X_eval)
 ```
 
-`X_background` is simply a NumPy array containing 100 observed rows. It can be supplied anywhere an unweighted SHAP background is expected.
+`X_background` is a NumPy array containing 100 observed rows. It can be supplied anywhere an unweighted background is expected.
 
 The diagnostics report how closely the selected background satisfies the requested neutrality constraint.
 
@@ -93,8 +93,7 @@ In addition, the baselines can be supplied to any feature attribution method tha
 
 ## Why prediction-neutral backgrounds?
 
-Every feature attribution answers a counterfactual question. For Shapley
-methods that question is determined entirely by the background distribution.
+Every feature attribution answers a counterfactual question. For most feature attribution methods that question is determined entirely by the background distribution.
 
 Using a background distribution $Q$, the attribution explains
 
@@ -441,8 +440,8 @@ attribution method.
 
 It does **not**
 
-- modify the Shapley algorithm;
-- approximate Shapley values;
+- modify the attribution algorithm;
+- approximate attribution values;
 - change the attribution axioms;
 - fit a generative model of the feature distribution; or
 - alter the underlying predictive model.
@@ -485,7 +484,7 @@ The distinguishing feature of CBaseline is that it combines three properties:
 Many existing approaches satisfy one or two of these properties, but not all
 three simultaneously.
 
-The full reference sample is prediction-neutral by construction but is not
+The full reference sample may be prediction-neutral but is not
 localized around the comparison of interest. Random subsamples inherit that
 reference only in expectation and introduce additional sampling variability.
 Methods based on generated counterfactuals require fitting a model for the
