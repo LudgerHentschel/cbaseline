@@ -612,5 +612,5 @@ or
 
 ## License
 
-CBaseline is distributed under the terms of the MIT License. See
+CBaseline is distributed under the terms of the BSD 3-Clause License. See
 [LICENSE](LICENSE) for details.
