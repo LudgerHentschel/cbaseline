@@ -8,3 +8,7 @@ dist/
 *.egg-info/
 *.whl
 .DS_Store
+
+# Generated documentation
+docs/_build/
+!docs/requirements.txt

@@ -1,19 +1,20 @@
 cff-version: 1.2.0
 title: "CBaseline"
-message: "If you use CBaseline in academic work, please cite the associated paper and repository."
+message: "If you use CBaseline in academic work, please cite the supporting papers and repository."
 type: software
 
 authors:
   - family-names: "Hentschel"
     given-names: "Ludger"
 
-repository-code: "https://github.com/lhentschel/cbaseline"
+repository-code: "https://github.com/LudgerHentschel/cbaseline"
 license: "BSD-3-Clause"
 
 keywords:
   - machine learning
   - interpretability
   - feature attribution
+  - Integrated Gradients
   - Shapley values
   - SHAP
   - prediction-neutral backgrounds
@@ -24,11 +25,18 @@ abstract: >
   and kernel-weighted backgrounds calibrated to a user-specified reference
   prediction.
 
-preferred-citation:
-  type: article
-  authors:
-    - family-names: "Hentschel"
-      given-names: "Ludger"
-  title: "A Canonical Background Distribution for Shapley Attribution"
-  year: 2026
-  url: "https://www.ludgerhentschel.com/Research.html"
+references:
+  - type: generic
+    authors:
+      - family-names: "Hentschel"
+        given-names: "Ludger"
+    title: "Canonical Integrated Gradients: Expectations over Neutral Prediction Baselines"
+    year: 2026
+    url: "https://www.ludgerhentschel.com/PDFs/Hentschel%20'26h.pdf"
+  - type: generic
+    authors:
+      - family-names: "Hentschel"
+        given-names: "Ludger"
+    title: "A Canonical Background Distribution for Shapley Attribution"
+    year: 2026
+    url: "https://www.ludgerhentschel.com/PDFs/Hentschel%20'26i.pdf"

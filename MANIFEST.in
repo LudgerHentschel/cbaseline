@@ -4,3 +4,5 @@ include CITATION.cff
 include TESTING.md
 recursive-include examples *.py
 recursive-include tests *.py
+recursive-include docs *.md *.py *.txt *.html *.svg
+prune docs/_build
