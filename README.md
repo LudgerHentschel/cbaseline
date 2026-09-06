@@ -1,6 +1,7 @@
 # CBaseline
 
 [![PyPI version](https://img.shields.io/pypi/v/cbaseline.svg)](https://pypi.org/project/cbaseline/)
+[![Documentation](https://img.shields.io/badge/docs-user%20guide-blue)](https://ludgerhentschel.github.io/cbaseline/)
 
 **[Read the documentation](https://ludgerhentschel.github.io/cbaseline/)** · [Getting started](https://ludgerhentschel.github.io/cbaseline/getting-started.html)
 
