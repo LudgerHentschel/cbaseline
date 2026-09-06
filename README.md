@@ -2,6 +2,8 @@
 
 [![PyPI version](https://img.shields.io/pypi/v/cbaseline.svg)](https://pypi.org/project/cbaseline/)
 
+**[Read the documentation](https://ludgerhentschel.github.io/cbaseline/)** · [Getting started](https://ludgerhentschel.github.io/cbaseline/getting-started.html)
+
 CBaseline constructs **prediction-neutral background distributions** for
 Integrated Gradients and SHAP. It supplies observed baseline rows and weights
 for the **UnifiedIG / TreeIG stack**, and compact equal-weight backgrounds for
@@ -81,7 +83,7 @@ np.testing.assert_allclose(
 
 Calibrated weights are preferred when the attribution engine supports them.
 For UnifiedIG and other IG engines, preserve both `wb.rows` and `wb.weights`
-when averaging baseline attributions; see [integrations](docs/integrations.md).
+when averaging baseline attributions; see [integrations](https://ludgerhentschel.github.io/cbaseline/integrations.html).
 
 ## Quickstart: SHAP
 
@@ -125,12 +127,12 @@ the reference distribution; TreeIG, UnifiedIG, or SHAP computes the attributions
 
 ## Documentation
 
-The [documentation guide](docs/index.md) covers:
+The [documentation guide](https://ludgerhentschel.github.io/cbaseline/) covers:
 
-- [Getting started](docs/getting-started.md) and [TreeIG, UnifiedIG, and SHAP integrations](docs/integrations.md).
-- [Prediction neutrality](docs/concepts.md) and [choosing `f0`](docs/reference-predictions.md) for regression, binary, and multiclass models.
-- [Weighted and equal-weight constructions](docs/backgrounds.md), tuning, and [diagnostics](docs/diagnostics.md).
-- [API reference](docs/api.md), [papers and citation](docs/references.md), and [building the Sphinx/PyData site](docs/building.md).
+- [Getting started](https://ludgerhentschel.github.io/cbaseline/getting-started.html) and [TreeIG, UnifiedIG, and SHAP integrations](https://ludgerhentschel.github.io/cbaseline/integrations.html).
+- [Prediction neutrality](https://ludgerhentschel.github.io/cbaseline/concepts.html) and [choosing `f0`](https://ludgerhentschel.github.io/cbaseline/reference-predictions.html) for regression, binary, and multiclass models.
+- [Weighted and equal-weight constructions](https://ludgerhentschel.github.io/cbaseline/backgrounds.html), tuning, and [diagnostics](https://ludgerhentschel.github.io/cbaseline/diagnostics.html).
+- [API reference](https://ludgerhentschel.github.io/cbaseline/api.html), [papers and citation](https://ludgerhentschel.github.io/cbaseline/references.html), and [building the Sphinx/PyData site](https://ludgerhentschel.github.io/cbaseline/building.html).
 
 For classification, construct the background on the same score scale you
 attribute. The logit of a reference probability and the mean model logit answer

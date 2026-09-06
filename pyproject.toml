@@ -60,7 +60,7 @@ dev = [
 ]
 
 [project.urls]
-Documentation = "https://github.com/LudgerHentschel/cbaseline/blob/main/docs/index.md"
+Documentation = "https://ludgerhentschel.github.io/cbaseline/"
 Homepage = "https://github.com/LudgerHentschel/cbaseline"
 Repository = "https://github.com/LudgerHentschel/cbaseline"
 Issues = "https://github.com/LudgerHentschel/cbaseline/issues"
