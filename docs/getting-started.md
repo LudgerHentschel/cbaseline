@@ -2,6 +2,14 @@
 
 ## Installation
 
+Install from conda-forge with conda:
+
+```bash
+conda install -c conda-forge cbaseline
+```
+
+Or install from PyPI with pip:
+
 ```bash
 pip install cbaseline
 ```
