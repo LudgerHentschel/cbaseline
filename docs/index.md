@@ -46,6 +46,7 @@ reference-predictions
 backgrounds
 integrations
 diagnostics
+ig-stack
 ```
 
 ```{toctree}
