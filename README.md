@@ -164,3 +164,5 @@ paper corresponding to your construction and attribution method:
 ## License
 
 CBaseline is distributed under the [BSD 3-Clause License](LICENSE).
+
+Release maintainers: see [Publishing releases](docs/publishing.md).

@@ -51,6 +51,7 @@ docs = [
 ]
 
 dev = [
+    "tomli>=2; python_version < '3.11'",
     "pytest>=8.0",
     "build>=1.0",
     "twine>=5.0",
