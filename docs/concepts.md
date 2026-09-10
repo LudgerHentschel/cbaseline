@@ -32,9 +32,11 @@ attribution still depend on feature dimension. Many independent outputs can
 also make localization harder.
 
 Calibration enforces a mean constraint; it does not make every retained row
-predict exactly `f0`. Two neutral distributions may explain the same total
-while allocating it differently. Localization identifies which reference
-population, among those with that mean, is relevant to the question.
+predict exactly `f0`. A reweighting that pairs high- and low-prediction cases
+averages to `f0` while containing no case the model predicts anywhere near it.
+Two neutral distributions may explain the same total while allocating it
+differently. Localization identifies which reference population, among those
+with that mean, is relevant to the question.
 
 ## What remains the attribution engine's responsibility
 

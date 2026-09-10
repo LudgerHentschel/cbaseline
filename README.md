@@ -5,17 +5,34 @@
 
 **[Read the documentation](https://ludgerhentschel.github.io/cbaseline/)** · [Getting started](https://ludgerhentschel.github.io/cbaseline/getting-started.html)
 
-CBaseline constructs **prediction-neutral background distributions** for
-Integrated Gradients and SHAP. It supplies observed baseline rows and weights
-for the **UnifiedIG / TreeIG stack**, and compact equal-weight backgrounds for
-**SHAP** and other attribution software that accepts an unweighted matrix.
+**Attribution methods explain a contrast. CBaseline constructs the reference
+population that defines it.**
 
-Given a fitted model, observed reference data, and a reference prediction
-$f_0$, CBaseline localizes observations in prediction space and constructs a
-background whose mean model output matches $f_0$, exactly to numerical
-tolerance with calibrated weights or approximately with equal weights.
-Attributions then explain the intended contrast $f(x)-f_0$, subject to the
-reported background residual and the attribution method's numerical error.
+Integrated Gradients and Shapley attribution both decompose $f(x)-f_0$ for some
+reference output $f_0$. That reference is usually inherited rather than chosen.
+An all-zeros baseline generally lies off the data manifold. A mean input
+$\bar{x}$ is not an observed case, and for nonlinear $f$,
+$f(\bar{x}) \neq \mathbb{E}[f(X)]$, so the corresponding reference output is
+not the mean prediction.
+
+A useful reference must satisfy two separate requirements. It must be
+**neutral** — its mean model output equals $f_0$ — and it must be
+**localized** — assembled from cases the model already predicts near $f_0$.
+
+CBaseline satisfies both using observed rows only. It localizes in prediction
+space under a fitted metric that accounts for output scale and redundant
+directions, then calibrates by exponential tilting until the weighted mean
+output equals $f_0$ to numerical tolerance. Equal-weight backgrounds
+approximate neutrality with a fixed-size selection and report the residual they
+achieve. Attributions then explain the intended contrast $f(x)-f_0$, subject to
+that residual and the attribution method's own numerical error.
+
+The construction is method-agnostic. The same background serves Integrated
+Gradients, interventional Shapley attribution — where the weighted mean is the
+empty-coalition value $v(\emptyset)$ — and any implementation that accepts a
+background matrix. Calibrated weights feed the **UnifiedIG / TreeIG stack**
+directly; deterministic equal-weight backgrounds give **SHAP** and other
+software a first-class workflow through standard background-matrix interfaces.
 
 ![Observed inputs near a prediction-neutral manifold](docs/Figure_NeutralManifold.svg)
 
@@ -44,7 +61,7 @@ Or install from PyPI with pip:
 pip install cbaseline
 ```
 
-Requires Python 3.10 or newer, NumPy, SciPy, and Numba. Attribution libraries
+Requires Python 3.10 or newer, NumPy, and SciPy. Attribution libraries
 are installed separately. For the examples below:
 
 ```bash

@@ -14,7 +14,7 @@ Or install from PyPI with pip:
 pip install cbaseline
 ```
 
-Python 3.10 or newer is required. NumPy, SciPy, and Numba are runtime
+Python 3.10 or newer is required. NumPy and SciPy are the only runtime
 dependencies; CBaseline itself does not require an attribution library.
 Install `treeig`, `scikit-learn`, and `shap` to run the integration examples.
 
