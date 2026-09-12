@@ -5,13 +5,6 @@
 
 **[Read the documentation](https://ludgerhentschel.github.io/cbaseline/)** · [Getting started](https://ludgerhentschel.github.io/cbaseline/getting-started.html)
 
-CBaseline is a Python package that constructs empirical reference background
-distributions for Integrated Gradients, SHAP, and other compatible attribution
-methods. Install and import it as `cbaseline`. Given aligned model predictions,
-a reference output `f0`, and observed feature rows, `background(...)` returns
-selected rows, weights, and diagnostics. Your attribution engine then computes
-the feature contributions.
-
 **Attribution methods explain a contrast. CBaseline constructs the reference
 population that defines it.**
 
