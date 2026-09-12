@@ -1,3 +1,9 @@
+---
+myst:
+  html_meta:
+    description: "Check CBaseline achieved reference outputs, neutrality residuals, effective sample sizes, and calibration failures."
+---
+
 # Diagnostics and numerical checks
 
 Inspect both the construction and the downstream explanation. A small

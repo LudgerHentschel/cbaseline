@@ -1,3 +1,9 @@
+---
+myst:
+  html_meta:
+    description: "Understand prediction neutrality, empirical reference distributions, and localization in prediction space."
+---
+
 # Prediction-neutral backgrounds
 
 ## The prediction contrast

@@ -1,3 +1,9 @@
+---
+myst:
+  html_meta:
+    description: "Install CBaseline and construct calibrated and equal-weight backgrounds from observed rows and model predictions."
+---
+
 # Getting started
 
 ## Installation

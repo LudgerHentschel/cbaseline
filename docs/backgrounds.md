@@ -1,3 +1,9 @@
+---
+myst:
+  html_meta:
+    description: "Choose calibrated, equal-weight, or kernel CBaseline backgrounds and understand tuning, feasibility, and neutrality guarantees."
+---
+
 # Background constructions and tuning
 
 All modes use observed rows and the prediction metric. Choose a construction

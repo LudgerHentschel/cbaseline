@@ -1,3 +1,9 @@
+---
+myst:
+  html_meta:
+    description: "Use CBaseline backgrounds with TreeIG, UnifiedIG, and SHAP while preserving the appropriate rows, weights, and output scale."
+---
+
 # Integrated Gradients and SHAP integrations
 
 CBaseline constructs the reference distribution; the attribution engine
@@ -57,12 +63,26 @@ logits and class centering, and verify the output function on baseline rows.
 
 ## UnifiedIG and other Integrated Gradients engines
 
-In the UnifiedIG / TreeIG stack, CBaseline supplies the distribution and the
-selected backend computes path attributions. Preserve `wb.rows` and
-`wb.weights` together through the wrapper. The direct TreeIG example above
-is the concrete weighted integration demonstrated here; wrapper argument
-names and backend support should be checked against the installed UnifiedIG
-version.
+[UnifiedIG](https://ludgerhentschel.github.io/unifiedig/) accepts the same
+CBaseline `Background` directly. Install `unifiedig` to run this section with
+the shared regression setup and calibrated `wb` above:
+
+```python
+import unifiedig as uig
+
+explanation = uig.Explainer(model, wb)(X_eval)
+achieved = np.average(wb.predictions, axis=0, weights=wb.weights)
+np.testing.assert_allclose(explanation.base_values, achieved, atol=1e-8)
+np.testing.assert_allclose(
+    explanation.base_values + explanation.values.sum(axis=1),
+    model.predict(X_eval), atol=1e-8,
+)
+```
+
+The background carries its aligned rows and weights through the wrapper to the
+selected backend. See [UnifiedIG's baseline guide](https://ludgerhentschel.github.io/unifiedig/baselines.html)
+and [model support](https://ludgerhentschel.github.io/unifiedig/supported-models.html)
+when adapting this regression example to another model or output scale.
 
 For an engine supporting only a single baseline at a time, the following
 adapter makes the required averaging explicit. `attribute_one(X_eval, row)`
@@ -83,7 +103,7 @@ def average_baseline_attributions(attribute_one, X_eval, wb):
 ```
 
 Prefer native weighted batching when available. This adapter illustrates the
-contract without assuming a UnifiedIG constructor signature. If a backend
+weighted-averaging contract for other attribution engines. If a backend
 only supports equal-weight distributions, construct `weighting="equal"`
 instead. Numerical IG needs its own integration-accuracy checks in addition
 to CBaseline's mean-neutrality check.

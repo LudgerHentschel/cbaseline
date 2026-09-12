@@ -1,0 +1,37 @@
+# CBaseline
+
+> CBaseline (`cbaseline`) is a Python package that constructs empirical reference background distributions for Integrated Gradients, SHAP, and other compatible attribution methods. It returns observed rows, weights, and diagnostics; a separate attribution engine computes feature contributions.
+
+Install with `pip install cbaseline` or `conda install -c conda-forge cbaseline` (Python 3.10+). NumPy and SciPy are runtime dependencies; attribution libraries are installed separately. Import with `from cbaseline import background`. The primary call is `background(predictions, f0, features, weighting=...)`. Predictions and feature rows must be aligned and must use the same output function and scale as the downstream attribution.
+
+Choose `weighting="calibrated"` for engines that consume observation weights, including UnifiedIG and TreeIG. Preserve both returned rows and weights. Calibration enforces the weighted mean prediction around `f0` to configured numerical tolerances and raises on failure. Feasibility is limited by the available prediction support; arbitrary targets cannot always be attained.
+
+Choose `weighting="equal"` for standard SHAP background-matrix workflows. It selects a deterministic fixed-size subset with uniform weights (default size 100); neutrality is approximate. An unmet requested tolerance returns the best searched set with `tolerance_met=False`. Inspect the achieved mean and residual rather than substituting the requested `f0` for the actual baseline output.
+
+`weighting="kernel"` localizes without enforcing neutrality. For every mode, inspect the achieved background mean in output units. Classification backgrounds must match the attribution scale and class order; the IG examples use scores/logits and joint centered-logit vectors for multiclass outputs. CBaseline also supports compatible SHAP workflows using their chosen output function.
+
+## Start here
+
+- [Installation and complete example](https://ludgerhentschel.github.io/cbaseline/getting-started.html): Construct and inspect calibrated and equal-weight backgrounds from generated data.
+- [Background modes and tuning](https://ludgerhentschel.github.io/cbaseline/backgrounds.html): Calibration, equal-weight selection, kernel weighting, bandwidth, size, and feasibility.
+- [Choosing the reference prediction](https://ludgerhentschel.github.io/cbaseline/reference-predictions.html): Regression, binary, and multiclass output definitions and reference targets.
+- [Diagnostics](https://ludgerhentschel.github.io/cbaseline/diagnostics.html): Achieved mean, neutrality residuals, effective sample size, and failure behavior.
+
+## Integration and reference
+
+- [TreeIG, UnifiedIG, and SHAP integrations](https://ludgerhentschel.github.io/cbaseline/integrations.html): Use backgrounds in attribution workflows and check reconstructed outputs.
+- [API reference](https://ludgerhentschel.github.io/cbaseline/api.html): Rendered background constructors, Background objects, prediction metrics, signatures, and docstrings. Raw Sphinx source contains unexpanded autodoc directives.
+- [Prediction-neutral backgrounds](https://ludgerhentschel.github.io/cbaseline/concepts.html): Reference contrasts, neutrality, and localization in prediction space.
+
+## Related projects
+
+- [Integrated Gradients stack](https://ludgerhentschel.github.io/cbaseline/ig-stack.html): How the four projects compose and why output scales must agree.
+- [UnifiedIG](https://ludgerhentschel.github.io/unifiedig/): Common Integrated Gradients interface across supported model families; accepts CBaseline backgrounds directly.
+- [TreeIG](https://ludgerhentschel.github.io/treeig/): Tree-path attribution for supported models with weighted-background support.
+- [skgrad](https://ludgerhentschel.github.io/skgrad/): Analytic input gradients and Jacobians for supported fitted scikit-learn models; does not construct backgrounds or compute attributions itself.
+
+## Development and methodology
+
+- [Repository](https://github.com/ludgerhentschel/cbaseline): Source code, tests, and package metadata.
+- [Papers and citation](https://ludgerhentschel.github.io/cbaseline/references.html): Supporting methodology for calibrated and equal-weight constructions.
+- [Documentation build](https://ludgerhentschel.github.io/cbaseline/building.html): Build and validate the site and discovery files.

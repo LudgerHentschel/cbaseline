@@ -1,3 +1,9 @@
+---
+myst:
+  html_meta:
+    description: "Look up CBaseline background constructors, Background objects, prediction metrics, parameters, and diagnostics."
+---
+
 # API reference
 
 Use `background` for normal workflows. It returns a `Background` with aligned

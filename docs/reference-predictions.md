@@ -1,3 +1,9 @@
+---
+myst:
+  html_meta:
+    description: "Choose CBaseline reference outputs for regression, binary classification, and multiclass models on the intended attribution scale."
+---
+
 # Choosing the reference prediction
 
 `f0` is required. It expresses the question: why this output rather than the

@@ -5,6 +5,13 @@
 
 **[Read the documentation](https://ludgerhentschel.github.io/cbaseline/)** · [Getting started](https://ludgerhentschel.github.io/cbaseline/getting-started.html)
 
+CBaseline is a Python package that constructs empirical reference background
+distributions for Integrated Gradients, SHAP, and other compatible attribution
+methods. Install and import it as `cbaseline`. Given aligned model predictions,
+a reference output `f0`, and observed feature rows, `background(...)` returns
+selected rows, weights, and diagnostics. Your attribution engine then computes
+the feature contributions.
+
 **Attribution methods explain a contrast. CBaseline constructs the reference
 population that defines it.**
 
@@ -46,6 +53,19 @@ The methodology is developed in two technical papers:
 
 - [**Canonical Integrated Gradients: Expectations over Neutral Prediction Baselines** — Hentschel (2026a)](https://www.ludgerhentschel.com/PDFs/Hentschel%20'26h.pdf).
 - [**A Canonical Background Distribution for Shapley Attribution** — Hentschel (2026b)](https://www.ludgerhentschel.com/PDFs/Hentschel%20'26i.pdf).
+
+## Choose a background
+
+| Attribution workflow | Mode | What neutrality means |
+|---|---|---|
+| An engine that accepts observation weights, such as UnifiedIG or TreeIG | `weighting="calibrated"` | The weighted mean prediction meets configured tolerances around `f0`; calibration failure raises an error. |
+| A standard SHAP background-matrix interface | `weighting="equal"` | A deterministic fixed-size subset approximates `f0`; inspect the achieved mean and residual. |
+| Localization without enforcing neutrality | `weighting="kernel"` | Kernel weights favor predictions near `f0`, but their mean is not constrained to equal it. |
+
+Preserve both rows and weights for weighted attribution. Calibrated targets
+must be supported by the available predictions; an arbitrary `f0` is not always
+feasible. For every mode, the attribution reference is the **achieved background
+mean**, and predictions must use the same output scale as the attribution engine.
 
 ## Installation
 
@@ -145,6 +165,11 @@ the reference distribution; TreeIG, UnifiedIG, or SHAP computes the attributions
 
 ## Documentation
 
+[Background modes](https://ludgerhentschel.github.io/cbaseline/backgrounds.html) and [diagnostics](https://ludgerhentschel.github.io/cbaseline/diagnostics.html)
+explain feasibility, residuals, and failure behavior. For automated readers,
+[llms.txt](https://ludgerhentschel.github.io/cbaseline/llms.txt) maps the guides,
+complete examples, and rendered API reference.
+
 The [documentation guide](https://ludgerhentschel.github.io/cbaseline/) covers:
 
 - [Getting started](https://ludgerhentschel.github.io/cbaseline/getting-started.html) and [TreeIG, UnifiedIG, and SHAP integrations](https://ludgerhentschel.github.io/cbaseline/integrations.html).
@@ -156,6 +181,19 @@ For classification, construct the background on the same score scale you
 attribute. The logit of a reference probability and the mean model logit answer
 different questions. Multiclass examples use one joint centered-logit vector
 background across all classes.
+
+## Related projects
+
+CBaseline can be used independently of the Integrated Gradients stack. Choose an
+attribution engine that consumes the background in the intended form:
+
+| Package | Role |
+|---|---|
+| [UnifiedIG](https://ludgerhentschel.github.io/unifiedig/) (`unifiedig`) | A common Integrated Gradients attribution interface across supported model families; accepts CBaseline backgrounds directly. |
+| [TreeIG](https://ludgerhentschel.github.io/treeig/) (`treeig`) | Direct tree-path attribution for supported models; accepts CBaseline rows and weights through its background interface. |
+| [skgrad](https://ludgerhentschel.github.io/skgrad/) (`skgrad`) | Analytic input gradients and Jacobians for supported scikit-learn models; a derivative component rather than an attribution engine. |
+
+Standard SHAP matrix-background workflows use the equal-weight construction.
 
 ## Citation
 
