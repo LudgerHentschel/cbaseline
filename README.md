@@ -1,7 +1,11 @@
 # CBaseline
 
+[![Tests](https://github.com/LudgerHentschel/cbaseline/actions/workflows/tests.yml/badge.svg)](https://github.com/LudgerHentschel/cbaseline/actions/workflows/tests.yml)
+[![Documentation](https://img.shields.io/badge/docs-user%20guide-blue.svg)](https://ludgerhentschel.github.io/cbaseline/)
 [![PyPI version](https://img.shields.io/pypi/v/cbaseline.svg)](https://pypi.org/project/cbaseline/)
-[![Documentation](https://img.shields.io/badge/docs-user%20guide-blue)](https://ludgerhentschel.github.io/cbaseline/)
+[![Conda-forge version](https://img.shields.io/conda/v/conda-forge/cbaseline.svg?label=conda-forge)](https://anaconda.org/conda-forge/cbaseline)
+[![Python versions](https://img.shields.io/pypi/pyversions/cbaseline.svg)](https://pypi.org/project/cbaseline/)
+[![License: BSD-3-Clause](https://img.shields.io/badge/license-BSD--3--Clause-blue.svg)](https://github.com/LudgerHentschel/cbaseline/blob/main/LICENSE)
 
 **Attribution methods explain a contrast. CBaseline constructs the reference
 population that defines it.**
