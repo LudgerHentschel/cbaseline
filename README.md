@@ -184,9 +184,9 @@ attribution engine that consumes the background in the intended form:
 
 | Package | Role |
 |---|---|
-| [UnifiedIG](https://ludgerhentschel.github.io/unifiedig/) (`unifiedig`) | A common Integrated Gradients attribution interface across supported model families; accepts CBaseline backgrounds directly. |
-| [TreeIG](https://ludgerhentschel.github.io/treeig/) (`treeig`) | Direct tree-path attribution for supported models; accepts CBaseline rows and weights through its background interface. |
-| [skgrad](https://ludgerhentschel.github.io/skgrad/) (`skgrad`) | Analytic input gradients and Jacobians for supported scikit-learn models; a derivative component rather than an attribution engine. |
+| [UnifiedIG](https://github.com/LudgerHentschel/unifiedig) (`unifiedig`) | A common Integrated Gradients attribution interface across supported model families; accepts CBaseline backgrounds directly. |
+| [TreeIG](https://github.com/LudgerHentschel/treeig) (`treeig`) | Direct tree-path attribution for supported models; accepts CBaseline rows and weights through its background interface. |
+| [skgrad](https://github.com/LudgerHentschel/skgrad) (`skgrad`) | Analytic input gradients and Jacobians for supported scikit-learn models; a derivative component rather than an attribution engine. |
 
 Standard SHAP matrix-background workflows use the equal-weight construction.
 
