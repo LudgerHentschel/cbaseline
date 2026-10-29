@@ -61,10 +61,11 @@ dev = [
 ]
 
 [project.urls]
-Documentation = "https://ludgerhentschel.github.io/cbaseline/"
 Homepage = "https://github.com/LudgerHentschel/cbaseline"
+Documentation = "https://ludgerhentschel.github.io/cbaseline/"
 Repository = "https://github.com/LudgerHentschel/cbaseline"
 Issues = "https://github.com/LudgerHentschel/cbaseline/issues"
+Changelog = "https://github.com/LudgerHentschel/cbaseline/blob/main/CHANGELOG.md"
 
 [tool.setuptools]
 include-package-data = true
